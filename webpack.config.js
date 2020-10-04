@@ -9,6 +9,14 @@ module.exports = {
     devServer: {
         open: true
     },
+    entry: [
+      './src/index.js'
+    ],
+    output: {
+      path: __dirname,
+      publicPath: '/',
+      filename: 'bundle.js'
+    },
     module: {
       rules: [
         {
