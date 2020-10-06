@@ -1,3 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Open+Sans&family=Poppins&family=Roboto&display=swap');
+@import '_colors';
+
 body {
-    background-color: pink
+  font-family: 'IBM Plex Sans', 'Open Sans', 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Poppins', 'Open Sans', 'Roboto', sans-serif;
+}
+
+p {
+  font-size: .8rem;
+  margin: 15px 0;
+}
+
+.donation-form {
+  width: 350px;
+  margin: 30vh auto 0;
+  border-radius: 5px;
+  border: 1px solid $slate-40;
+  box-shadow: 0px 2px 10px 0px $slate-40;
+
+  &__content {
+    padding: 20px;
   }
+
+  .form-input {
+    margin-top: 30px;
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  position: relative;
+  margin-top: -7px;
+  &__progression {
+    display: inline-block;
+    height: 100%;
+    &--filled {
+      border-top-left-radius: 5px;
+      background-color: $mint;
+      margin-left: -1px;
+    }
+
+    &--togo {
+      border-top-right-radius: 5px;
+      background-color: $mint-40;
+      margin-left: 1px;
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    font-size: .8rem;
+    border-radius: 5px;
+    background: $ocean-40;
+    color: $ocean;
+    width: 96%;
+    padding: 6px 2%;
+    top: -35px;
+    &::after {
+      content: "\25BC";
+      position: absolute;
+      bottom: -21px;
+      color: $ocean-40;
+      font-size: 45px;
+      right: 0px;
+    }
+  }
+}
+
+.form-input {
+  position: relative;
+  &__label {
+    color: $slate-40;
+    font-size: 17px;
+    font-weight: 600;
+    &--currency {
+      &:after {
+        content: "\0024";
+        padding: 10px 8px;
+        font-size: .8em;
+        justify-content: center;
+        left: 0px;
+        position: absolute;
+      }
+    }
+  }
+
+  &__input {
+    width: 58%;
+    float: left;
+    border-radius: 5px;
+    border: 1px solid $slate-40;
+    padding: 9px 2% 10px;
+    font-weight: 600;
+    font-size: 18px;
+    &--currency {
+      padding-left: 20px;
+    }
+    &:focus {
+      outline: none;
+      box-shadow:inset 0 0 1px 1px $slate-40;
+    }
+    &:active {
+      outline: none;
+      box-shadow:inset 0 0 1px 1px $slate-40;
+    }
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+  }
+
+  &__button {
+    width: 32%;
+    height: 42px;
+    border-radius: 5px;
+    border: 1px solid $slate-40;
+    padding: 0px 2% ;
+    color: $white;
+    background-color: $mint;
+    font-size: 16px;
+    font-weight: 600;
+    transition: font 0.6s ease;
+    &--success {
+      font-size: 14px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline:0;
+    }
+  }
+
+  &__notification {
+    font-size: .8rem;
+    &--error {
+      color: $strawberry;
+    }
+  }
+
+  &--btn-combo {
+    .form-input {
+      &__input {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      border-right: 0px;
+      }
+      &__button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left: 0px;
+      }
+    }
+  }
+  &--error {
+    .form-input__input {
+      box-shadow:inset 0 0 1px 1px $strawberry;
+    }
+  }
+}
