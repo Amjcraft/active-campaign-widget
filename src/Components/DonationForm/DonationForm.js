@@ -1,4 +1,4 @@
-import React, { Component, useRef, useState, useEffect } from 'react'
+import React, { Component, createRef, useState } from 'react'
 
 import './DonationForm.scss';
 
@@ -35,8 +35,9 @@ const InputWithButton = ({name, type, buttonText, onSubmit, validateFn}) => {
 
     const [notification, setNotification] = useState({ active: false });
     const [submitState, setSubmitState] = useState(false);
+    const [inputValue, setInputValue] = useState("");
 
-    const inputField = useRef(null);
+    const inputFieldRef= createRef();
 
     const submitStateTransition = () => {
         setSubmitState(!submitState);
@@ -46,29 +47,38 @@ const InputWithButton = ({name, type, buttonText, onSubmit, validateFn}) => {
         }, 2000);
     }
 
-    const onHanldeSubmit = () => {
-        
-        let value = inputField.current.value;
+    const onHandleSubmit = () => {
+        let value = inputValue;
 
         if(type === 'currency') {
-            value = parseFloat(parseFloat(inputField.current.value).toFixed(2));
+            value = parseFloat(inputValue);
         }
 
         if(validateFn && !validateFn(value, setNotification)){
-            inputField.current.select();
+            inputFieldRef.current.select();
             return false;
         }
 
-        setNotification({ active: false });
-       
-        submitStateTransition();
         onSubmit(value);
 
-        inputField.current.value = "";
+        submitStateTransition();
+        setNotification({ active: false });
+        setInputValue("");
+
+    }
+
+    const onHandleInputChange = (e) => {
+        const values = e.target.value.split('');
+        const decimalIdx= values.indexOf('.');
+
+        if(decimalIdx !== -1){
+            values.splice(decimalIdx+3, values.length);
+        }
+        return setInputValue(values.join(""));
     }
 
     const formInputProps = {
-        className: (notification.active) ? "form-input form-input--btn-combo" : `form-input form-input--btn-combo form-input--${notification.type}`
+        className: (!notification.active) ? "form-input form-input--btn-combo" : `form-input form-input--btn-combo form-input--${notification.type}`
     }
 
     const inputLabelProps = {
@@ -79,11 +89,13 @@ const InputWithButton = ({name, type, buttonText, onSubmit, validateFn}) => {
     const inputProps = {
         name,
         className: `form-input__input form-input__input--${type}`,
-        ref: inputField,
         type: "number",
+        ref: inputFieldRef,
+        value: inputValue,
+        onChange: onHandleInputChange,
         onKeyDown: (e) => {
             if(e.key === 'Enter') {
-                onHanldeSubmit();
+                onHandleSubmit();
             }
         }
     }
@@ -91,7 +103,7 @@ const InputWithButton = ({name, type, buttonText, onSubmit, validateFn}) => {
     const btnProps = {
         className: (submitState) ? "form-input__button form-input__button--success" : "form-input__button",
         onClick: () => {
-            onHanldeSubmit();
+            onHandleSubmit();
         }
     }
 
@@ -183,14 +195,14 @@ export class DonationForm extends Component {
     }
 
     validateDonationInput(value, setInputNotification) {
-        if (value && !isNaN(value) && value > this.props.donationMinRequired) {
+        if (value && !isNaN(value) && value >= this.props.donationMinRequired) {
             return true;
         }
 
         setInputNotification({ 
             active: true,
             type: 'error',
-            message: `Minimum of $${this.props.donationMinRequired} required` 
+            message: `*Minimum of $${this.props.donationMinRequired} required` 
         });
         return false;
     }

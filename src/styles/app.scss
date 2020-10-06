@@ -141,7 +141,8 @@ p {
   }
 
   &__notification {
-    font-size: .8rem;
+    font-size: .6rem;
+    float: left;
     &--error {
       color: $strawberry;
     }
